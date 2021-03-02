@@ -520,13 +520,13 @@ public class BitbucketServerAPIClient implements BitbucketApi {
         } else if (API_RATE_LIMIT_CODE == status) {
             LOGGER.fine("Bitbucket API rate limit reached, sleeping for 5 sec then retry...");
             try {
-				Thread.sleep(API_RATE_LIMIT_WAIT_TIME_DEFAULT);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                Thread.sleep(API_RATE_LIMIT_WAIT_TIME_DEFAULT);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             return checkPathExists(branchOrHash, path);
-    	} else {
+        } else {
             throw new IOException("Communication error for url: " + path + " status code: " + status);
         }
     }
@@ -869,22 +869,22 @@ public class BitbucketServerAPIClient implements BitbucketApi {
             }
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 
-            	if(response.getStatusLine().getStatusCode() == API_RATE_LIMIT_CODE) {
-            		response.close();
-            		httpget.releaseConnection();
-            		LOGGER.fine("Bitbucket API rate limit reached, sleeping for 5 sec then retry...");
+                if(response.getStatusLine().getStatusCode() == API_RATE_LIMIT_CODE) {
+                    response.close();
+                    httpget.releaseConnection();
+                    LOGGER.fine("Bitbucket API rate limit reached, sleeping for 5 sec then retry...");
                     try {
-						Thread.sleep(API_RATE_LIMIT_WAIT_TIME_DEFAULT);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-            		return getRequest(path);
-            	} else {
-	            	throw new BitbucketRequestException(response.getStatusLine().getStatusCode(),
-	                        "HTTP request error. Status: " + response.getStatusLine().getStatusCode()
-	                                + ": " + response.getStatusLine().getReasonPhrase() + ".\n" + response);
-            	}
+                        Thread.sleep(API_RATE_LIMIT_WAIT_TIME_DEFAULT);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    return getRequest(path);
+                } else {
+                    throw new BitbucketRequestException(response.getStatusLine().getStatusCode(),
+                            "HTTP request error. Status: " + response.getStatusLine().getStatusCode()
+                                    + ": " + response.getStatusLine().getReasonPhrase() + ".\n" + response);
+                }
             }
             return content;
         } catch (BitbucketRequestException | FileNotFoundException e) {
@@ -923,9 +923,9 @@ public class BitbucketServerAPIClient implements BitbucketApi {
                 throw new FileNotFoundException("URL: " + path);
             }
             if(response.getStatusLine().getStatusCode() == API_RATE_LIMIT_CODE) {
-            	httpget.releaseConnection();
-            	Thread.sleep(API_RATE_LIMIT_WAIT_TIME_DEFAULT);
-            	return getImageRequest(path);
+                httpget.releaseConnection();
+                Thread.sleep(API_RATE_LIMIT_WAIT_TIME_DEFAULT);
+                return getImageRequest(path);
             }
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 throw new BitbucketRequestException(response.getStatusLine().getStatusCode(),
@@ -1101,14 +1101,14 @@ public class BitbucketServerAPIClient implements BitbucketApi {
             EntityUtils.consume(response.getEntity());
 
             if(response.getStatusLine().getStatusCode() == API_RATE_LIMIT_CODE) {
-            	request.releaseConnection();
-            	try {
-					Thread.sleep(API_RATE_LIMIT_WAIT_TIME_DEFAULT);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            	return doRequest(request);
+                request.releaseConnection();
+                try {
+                    Thread.sleep(API_RATE_LIMIT_WAIT_TIME_DEFAULT);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return doRequest(request);
             }
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK && response.getStatusLine().getStatusCode() != HttpStatus.SC_CREATED) {
                 throw new BitbucketRequestException(response.getStatusLine().getStatusCode(), "HTTP request error. Status: " + response.getStatusLine().getStatusCode() + ": " + response.getStatusLine().getReasonPhrase() + ".\n" + response);
