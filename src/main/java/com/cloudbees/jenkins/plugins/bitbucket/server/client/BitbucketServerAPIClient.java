@@ -151,7 +151,7 @@ public class BitbucketServerAPIClient implements BitbucketApi {
 
     private static final String API_COMMIT_STATUS_PATH = "/rest/build-status/1.0/commits{/hash}";
     private static final Integer DEFAULT_PAGE_LIMIT = 200;
-    
+
     private static final int API_RATE_LIMIT_CODE = 429;
     private static final int API_RATE_LIMIT_WAIT_TIME_DEFAULT = 5000;
 
@@ -517,8 +517,8 @@ public class BitbucketServerAPIClient implements BitbucketApi {
             // https://support.atlassian.com/bitbucket-cloud/docs/use-bitbucket-rest-api-version-1/
         } else if (HttpStatus.SC_NOT_FOUND == status || HttpStatus.SC_UNAUTHORIZED == status) {
             return false;
-        } else if (API_RATE_LIMIT_CODE == status) { 
-    		LOGGER.fine("Bitbucket API rate limit reached, sleeping for 5 sec then retry...");
+        } else if (API_RATE_LIMIT_CODE == status) {
+            LOGGER.fine("Bitbucket API rate limit reached, sleeping for 5 sec then retry...");
             try {
 				Thread.sleep(API_RATE_LIMIT_WAIT_TIME_DEFAULT);
 			} catch (InterruptedException e) {
@@ -868,7 +868,7 @@ public class BitbucketServerAPIClient implements BitbucketApi {
                 throw new FileNotFoundException("URL: " + path);
             }
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                
+
             	if(response.getStatusLine().getStatusCode() == API_RATE_LIMIT_CODE) {
             		response.close();
             		httpget.releaseConnection();
@@ -1099,7 +1099,7 @@ public class BitbucketServerAPIClient implements BitbucketApi {
                 content = new String(buf.toByteArray(), StandardCharsets.UTF_8);
             }
             EntityUtils.consume(response.getEntity());
-            
+
             if(response.getStatusLine().getStatusCode() == API_RATE_LIMIT_CODE) {
             	request.releaseConnection();
             	try {
